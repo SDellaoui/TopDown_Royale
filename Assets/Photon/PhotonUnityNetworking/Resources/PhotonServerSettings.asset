@@ -29,15 +29,10 @@ MonoBehaviour:
   EnableSupportLogger: 0
   RunInBackground: 1
   RpcList:
-  - DestroySpaceship
-  - Fire
-  - RespawnSpaceship
-  - Shoot
-  - RPCShoot
-  - RPCDestroy
-  - RPCDestroyGameObject
-  - RPCSpawnGameObject
   - DestroyGameObject
+  - RPCDestroyChest
   - RSpawnGameObject
+  - SetAll
+  - RPCSetCurve
   DisableAutoOpenWizard: 1
   ShowSettings: 1

@@ -90,10 +90,24 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public void SetRoomName(string room){ roomName = room;}
     public string GetRoomName() { return roomName; }
 
+
+    public GameObject InstantiateSceneGameObject(string prefabPath, Vector3 position, Quaternion rotation)
+    {
+        if(!PhotonNetwork.IsMasterClient)
+            return null;
+        return PhotonNetwork.InstantiateSceneObject(prefabPath, position, rotation);
+    }
+
     public GameObject InstantiateGameobject(string prefabPath, Vector3 position, Quaternion rotation)
     {
         
         return PhotonNetwork.Instantiate(prefabPath, position, rotation);
+    }
+
+    public void DestroySceneGameObject(GameObject go)
+    {
+        if (PhotonNetwork.IsMasterClient)
+            PhotonNetwork.Destroy(go);
     }
 
     public void DestroyGameobject(GameObject go)

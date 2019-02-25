@@ -48,7 +48,7 @@ public class PhotonLobby : MonoBehaviourPunCallbacks, ILobbyCallbacks
         connectButton.SetActive(false);
         disconnectButton.SetActive(true);
         textRoom.transform.parent.gameObject.SetActive(true);
-        
+        return;
 #if UNITY_EDITOR
         PhotonManager.instance.SetRoomName("room_test");
         PhotonManager.instance.CreateRoom();

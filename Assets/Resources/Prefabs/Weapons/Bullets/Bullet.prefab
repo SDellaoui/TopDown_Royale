@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 31}
   - component: {fileID: 58}
   - component: {fileID: 47}
-  - component: {fileID: 78}
+  - component: {fileID: 77}
   - component: {fileID: 49}
-  - component: {fileID: 85}
   - component: {fileID: 84}
+  - component: {fileID: 83}
   m_Layer: 8
   m_Name: Bullet
   m_TagString: Projectile
@@ -105,7 +105,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &78
+--- !u!114 &77
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,7 +133,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.1
---- !u!114 &85
+--- !u!114 &84
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameobjectSpawnableType: 0
---- !u!114 &84
+--- !u!114 &83
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

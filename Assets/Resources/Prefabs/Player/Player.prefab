@@ -145,7 +145,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 37}
-  - component: {fileID: 79}
+  - component: {fileID: 78}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: Untagged
@@ -169,7 +169,7 @@ Transform:
   m_Father: {fileID: 39}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &79
+--- !u!114 &78
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -276,10 +276,10 @@ GameObject:
   - component: {fileID: 39}
   - component: {fileID: 61}
   - component: {fileID: 48}
-  - component: {fileID: 83}
-  - component: {fileID: 81}
   - component: {fileID: 82}
   - component: {fileID: 80}
+  - component: {fileID: 81}
+  - component: {fileID: 79}
   - component: {fileID: 52}
   m_Layer: 9
   m_Name: Player
@@ -374,7 +374,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &83
+--- !u!114 &82
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -390,7 +390,7 @@ MonoBehaviour:
   camera: {fileID: 46}
   weaponContainer: {fileID: 13}
   speed: 6
---- !u!114 &81
+--- !u!114 &80
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -408,12 +408,12 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   ObservedComponents:
-  - {fileID: 80}
-  - {fileID: 82}
+  - {fileID: 79}
+  - {fileID: 81}
   viewIdField: 0
   InstantiationId: 1
   isRuntimeInstantiated: 0
---- !u!114 &82
+--- !u!114 &81
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -426,12 +426,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   localScripts:
-  - {fileID: 83}
-  - {fileID: 79}
+  - {fileID: 82}
+  - {fileID: 78}
   localGameObjects:
   - {fileID: 16}
   playerSpriteRenderer: {fileID: 59}
---- !u!114 &80
+--- !u!114 &79
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
