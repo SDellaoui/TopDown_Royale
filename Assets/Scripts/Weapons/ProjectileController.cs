@@ -46,6 +46,7 @@ public class ProjectileController : MonoBehaviourPunCallbacks, IPunInstantiateMa
     {
         if(destroyColliders.Contains(collision.collider.gameObject.tag))
         {
+            Instantiate(Resources.Load("Prefabs/Particles/VFX_Bullet_Impact"), transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }
