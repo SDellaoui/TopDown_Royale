@@ -52,6 +52,8 @@ public class ProjectileController : MonoBehaviourPunCallbacks, IPunInstantiateMa
             if (collision.gameObject.GetComponent<PlayerNetworkManager>().photonView.Owner.UserId != ownerID)
             {
                 Instantiate(Resources.Load("Prefabs/Particles/VFX_Bullet_Hit_Player"), transform.position, Quaternion.identity);
+
+                SpawnUIDamage(damage);
                 Destroy(gameObject);
             }
         }
@@ -61,6 +63,7 @@ public class ProjectileController : MonoBehaviourPunCallbacks, IPunInstantiateMa
     {
         if(destroyColliders.Contains(collision.collider.gameObject.tag))
         {
+            SpawnUIDamage(damage);
             Instantiate(Resources.Load("Prefabs/Particles/VFX_Bullet_Impact"), transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
@@ -78,5 +81,12 @@ public class ProjectileController : MonoBehaviourPunCallbacks, IPunInstantiateMa
         if (isMine)
             Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameManager.instance.playerPrefab.GetComponent<Collider2D>());
         //Debug.Log("Bullet spawned. Is mine ? -> " + isMine);
+    }
+
+    public void SpawnUIDamage(int damage)
+    {
+        GameObject uiGameInfo = Instantiate(Resources.Load("Prefabs/UI/Game/UI_Game_Info"), transform.position, Quaternion.identity) as GameObject;
+        uiGameInfo.transform.SetParent(null);
+        uiGameInfo.GetComponentInChildren<UIGameInfo>().Init(UIGameInfoType.Damage, damage.ToString());
     }
 }

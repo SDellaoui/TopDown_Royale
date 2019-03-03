@@ -9,6 +9,10 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public GameObject playerPrefab;
 
+    private Camera currentCamera;
+
+    private bool isPlayerAlive = true;
+
     private void Awake()
     {
         if (instance == null)
@@ -42,7 +46,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
-        
+        if (isPlayerAlive)
+            currentCamera = playerPrefab.GetComponentInChildren<Camera>();
+        else
+            currentCamera = Camera.main;
     }
 
     public override void OnLeftRoom()
@@ -83,5 +90,10 @@ public class GameManager : MonoBehaviourPunCallbacks
             Debug.LogFormat("OnPlayerLeftRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
             LoadArena();
         }
+    }
+
+    public Camera GetCurrentCamera()
+    {
+        return currentCamera;
     }
 }
