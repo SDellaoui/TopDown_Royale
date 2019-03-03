@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 111}
   - component: {fileID: 100}
   - component: {fileID: 154}
-  - component: {fileID: 151}
+  - component: {fileID: 152}
   m_Layer: 0
   m_Name: Chest
   m_TagString: Breakable
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Loots:
   - {fileID: 32, guid: 9c69d329c9840314f83cfa1348e2ef00, type: 3}
---- !u!114 &151
+--- !u!114 &152
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

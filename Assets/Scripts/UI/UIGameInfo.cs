@@ -37,7 +37,7 @@ public class UIGameInfo : MonoBehaviour
         GameObject damageGO = Instantiate(Resources.Load(prefabToSpawn), randomPos, Quaternion.identity) as GameObject;
         damageGO.transform.SetParent(transform);
         damageGO.GetComponent<UIGameElement>().Init(uiGameInfoType,value);
-        Destroy(gameObject, 1.05f);
+        Destroy(gameObject, 1.22f);
         hasBeenInstantiated = true;
     }
 }
