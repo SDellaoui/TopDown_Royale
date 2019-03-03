@@ -48,15 +48,6 @@ public class PhotonLobby : MonoBehaviourPunCallbacks, ILobbyCallbacks
         connectButton.SetActive(false);
         disconnectButton.SetActive(true);
         textRoom.transform.parent.gameObject.SetActive(true);
-        return;
-#if UNITY_EDITOR
-        PhotonManager.instance.SetRoomName("room_test");
-        PhotonManager.instance.CreateRoom();
-#else
-        PhotonNetwork.JoinRoom("room_test");
-        //PhotonNetwork.JoinRandomRoom();
-#endif
-
     }
 
     public override void OnDisconnected(DisconnectCause cause)
@@ -66,12 +57,10 @@ public class PhotonLobby : MonoBehaviourPunCallbacks, ILobbyCallbacks
         joinButton.SetActive(false);
         cancelButton.SetActive(false);
         disconnectButton.SetActive(false);
-        //Debug.Log("UI Lobby Disconnected");
     }
 
     public void OnCreateRoomButtonClicked()
     {
-        //Debug.Log("Create Room Button clicked");
         if (textRoom.text == "")
             return;
         createButton.SetActive(false);
@@ -88,16 +77,6 @@ public class PhotonLobby : MonoBehaviourPunCallbacks, ILobbyCallbacks
         disconnectButton.SetActive(false);
         textRoom.transform.parent.gameObject.SetActive(false);
         roomListUI.SetActive(true);
-        /*
-        Debug.Log("Join Room Button clicked");
-        if (textRoom.text == "")
-            return;
-        createButton.SetActive(false);
-        joinButton.SetActive(false);
-        cancelButton.SetActive(true);
-        textRoom.transform.parent.gameObject.SetActive(false);
-        PhotonNetwork.JoinRoom(PhotonManager.instance.GetRoomName());
-        */
     }
     public void OnJoinRoomBackButtonClicked()
     {
@@ -110,7 +89,6 @@ public class PhotonLobby : MonoBehaviourPunCallbacks, ILobbyCallbacks
     }
     public void OnConnectButtonClicked()
     {
-        //Debug.Log("Button Offline clicked");
         PhotonNetwork.ConnectUsingSettings(); //Connects to Master photon server
     }
     public void OnDisconnectButtonClicked()
@@ -119,7 +97,6 @@ public class PhotonLobby : MonoBehaviourPunCallbacks, ILobbyCallbacks
     }
     public void OnCancelButtonClicked()
     {
-        //Debug.Log("Cancel button was clicked");
         cancelButton.SetActive(false);
         createButton.SetActive(true);
         joinButton.SetActive(true);

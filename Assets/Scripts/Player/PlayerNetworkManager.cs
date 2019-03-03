@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class PlayerNetworkController : MonoBehaviourPunCallbacks, IPunObservable
+public class PlayerNetworkManager : MonoBehaviourPunCallbacks, IPunObservable
 {
 
     public static GameObject localPlayerInstance;
@@ -12,8 +13,10 @@ public class PlayerNetworkController : MonoBehaviourPunCallbacks, IPunObservable
     public MonoBehaviour[] localScripts;
     public GameObject[] localGameObjects;
 
+    public PlayerHealthManager playerHealthManager;
     public SpriteRenderer playerSpriteRenderer;
     bool spriteFlip = false;
+
     Rigidbody2D rb;
     Vector3 networkPosition;
     Vector2 networkVelocity;
@@ -21,7 +24,7 @@ public class PlayerNetworkController : MonoBehaviourPunCallbacks, IPunObservable
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        Physics2D.IgnoreLayerCollision(10, 8);
+        //Physics2D.IgnoreLayerCollision(10, 8);
         if (photonView.IsMine)
         {
             Debug.Log("player spawned is mine");
@@ -69,7 +72,6 @@ public class PlayerNetworkController : MonoBehaviourPunCallbacks, IPunObservable
             playerSpriteRenderer.flipX = spriteFlip;
             //rb.velocity = networkVelocity;
         }
-        
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -91,7 +93,8 @@ public class PlayerNetworkController : MonoBehaviourPunCallbacks, IPunObservable
         switch (collision.gameObject.tag)
         {
             case "Projectile":
-                if (collision.gameObject.GetComponent<ProjectileController>().GetOwnerID() == photonView.Owner.UserId)
+                ProjectileController projectile = collision.gameObject.GetComponent<ProjectileController>();
+                if (projectile.GetOwnerID() == photonView.Owner.UserId)
                     return;
                 if (!photonView.IsMine)
                 {
@@ -99,9 +102,11 @@ public class PlayerNetworkController : MonoBehaviourPunCallbacks, IPunObservable
                 }
                 else
                 {
-                    photonView.RPC("DestroyGameObject", RpcTarget.AllViaServer, collision.gameObject.GetPhotonView().InstantiationId);
+                    photonView.RPC("RPCSetDamage", RpcTarget.All, projectile.damage);// collision.gameObject.GetPhotonView().InstantiationId, projectile.damage);
                 }
-                
+                break;
+            case "Collectible":
+                CollectItem(collision.gameObject);
                 break;
             default:
                 break;
@@ -111,7 +116,33 @@ public class PlayerNetworkController : MonoBehaviourPunCallbacks, IPunObservable
     {
         photonView.RPC("RPCSpawnGameObject",RpcTarget.All, go, position, rotation, this.gameObject);
     }
+
+    public void CollectItem(GameObject item)
+    {
+        CollectibleController collController = item.GetComponent<CollectibleController>();
+        if (collController != null)
+        {
+            switch(collController.collectibleType.ToString())
+            {
+                case "Health":
+                    if (playerHealthManager.GetHealth() == 100)
+                        return;
+                    break;
+                default:
+                    break;
+            }
+            item.SetActive(false);
+            photonView.RPC("RPCCollectItem", RpcTarget.AllViaServer, collController.collectibleType.ToString(), collController.photonView.ViewID, photonView.ViewID);
+        }
+    }
+
     #region RPC FUNCTIONS
+    [PunRPC]
+    void ReceiveHealth(int health)
+    {
+
+    }
+
     [PunRPC]
     void RSpawnGameObject(GameObject go, Vector3 position, Quaternion rotation, GameObject owner)
     {
@@ -130,9 +161,28 @@ public class PlayerNetworkController : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     [PunRPC]
-    void DestroyGameObject(int gameObjectID)
+    void RPCCollectItem(string itemType, int itemNetId, int ownerNetID)
     {
-        Destroy(PhotonView.Find(gameObjectID).gameObject);
+        PhotonView itemView = PhotonView.Find(itemNetId);
+        if (itemView == null)
+            return;
+        CollectibleController item = itemView.gameObject.GetComponent<CollectibleController>();
+        
+        if ((item.ownerID != -1 && item.ownerID != photonView.ViewID))
+            return;
+        else
+        {
+            item.ownerID = photonView.ViewID;
+            switch(itemType)
+            {
+                case "Health":
+                    playerHealthManager.SetHealth(item.collectibleValue);
+                    break;
+                default:
+                    break;
+            }
+            PhotonNetwork.Destroy(PhotonView.Find(itemNetId));
+        }
     }
     #endregion
 }

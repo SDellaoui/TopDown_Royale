@@ -14,7 +14,6 @@ public class CollectibleSpawnCurveController : MonoBehaviourPunCallbacks, IPunOb
     private Vector3[] point = new Vector3[3];
     private Vector2 startPoint;
 
-    //[SyncVar (hook = "OnSyncEndPoint")]
     private Vector2 endPoint;
     private Vector3 distancePoint;
     private Vector2 direction;
@@ -26,6 +25,9 @@ public class CollectibleSpawnCurveController : MonoBehaviourPunCallbacks, IPunOb
     //Bounce
     private int bounceCount = 0;
     private int nBounce = 3;
+
+    //Shadow
+    public GameObject shadow;
     
     // Start is called before the first frame update
     void Start()
@@ -75,7 +77,6 @@ public class CollectibleSpawnCurveController : MonoBehaviourPunCallbacks, IPunOb
         endPoint += new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0f));
 
         photonView.RPC("RPCSetCurve", RpcTarget.All,startPoint, endPoint, nBounce);
-        //SetCurve();
     }
     [PunRPC]
     void RPCSetCurve(Vector2 _startPoint, Vector2 _endPoint, int _nBounce)
@@ -148,6 +149,9 @@ public class CollectibleSpawnCurveController : MonoBehaviourPunCallbacks, IPunOb
             Vector3 m1 = Vector3.Lerp(point[0], point[1], count);
             Vector3 m2 = Vector3.Lerp(point[1], point[2], count);
             transform.position = Vector3.Lerp(m1, m2, count);
+
+            //Shadow Lerp
+            shadow.transform.position = Vector3.Lerp(shadow.transform.position, point[2], count);
         }
         //if the object reaches the end point, call a bounce.
         if (endPoint == new Vector2(transform.position.x, transform.position.y))

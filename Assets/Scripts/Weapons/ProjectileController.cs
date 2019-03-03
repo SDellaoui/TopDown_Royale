@@ -12,6 +12,9 @@ public class ProjectileController : MonoBehaviourPunCallbacks, IPunInstantiateMa
     private string ownerID = "";
     private bool stopped = false;
     private string[] destroyColliders = { "Wall", "Breakable"};
+
+
+    public int damage = 10;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +44,18 @@ public class ProjectileController : MonoBehaviourPunCallbacks, IPunInstantiateMa
     }
     public bool IsMyProjectile() { return isMine; }
     public string GetOwnerID() { return ownerID; }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "Player")// && !isMine)
+        {
+            if (collision.gameObject.GetComponent<PlayerNetworkManager>().photonView.Owner.UserId != ownerID)
+            {
+                Instantiate(Resources.Load("Prefabs/Particles/VFX_Bullet_Hit_Player"), transform.position, Quaternion.identity);
+                Destroy(gameObject);
+            }
+        }
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

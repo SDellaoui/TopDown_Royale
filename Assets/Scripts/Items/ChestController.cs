@@ -23,10 +23,6 @@ public class ChestController : MonoBehaviourPun, IPunObservable
         {
             rpcLootIndexes.Add(Random.Range(0, Loots.Length));
         }
-        /*
-        if (PhotonNetwork.IsMasterClient)
-            photonView.RPC("RPCSetAll", RpcTarget.All, nLoots, rpcLootIndexes);
-        */
     }
 
     // Update is called once per frame
@@ -52,7 +48,8 @@ public class ChestController : MonoBehaviourPun, IPunObservable
     {
         if (collision.collider.tag == "Projectile")
         {
-            photonView.RPC("RPCDestroyChest", RpcTarget.AllViaServer);
+            //Change system to destroy from the player
+            photonView.RPC("RPCDestroyChest", RpcTarget.AllBufferedViaServer);
         }
     }
 
@@ -92,35 +89,6 @@ public class ChestController : MonoBehaviourPun, IPunObservable
             }
             yield return new WaitForSeconds(0.08f);
         }
-        Destroy(gameObject);
+        PhotonNetwork.Destroy(gameObject);
     }
-    /*
-[Command]
-void CmdDestroyChest(GameObject player)
-{
-   if (Loots.Length == 0)
-       return;
-
-   GetComponent<SpriteRenderer>().enabled = false;
-   GetComponent<BoxCollider2D>().enabled = false;
-   StartCoroutine(SpawnWithDelay(Loots, transform.position, player));
-}
-
-IEnumerator SpawnWithDelay(GameObject[] loots, Vector3 position, GameObject owner)
-{
-
-   for (int i = 0; i < Random.Range(5, 10); i++)
-   {
-       currentLootIndex = Random.Range(0, loots.Length);
-       GameObject loot = Instantiate(Loots[currentLootIndex]) as GameObject;
-       loot.transform.position = transform.position;
-
-       //loot.GetComponent<CollectibleSpawnCurveController>().InitCurve(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
-       NetworkServer.Spawn(loot);
-       yield return new WaitForSeconds(0.08f);
-   }
-   Debug.Log("Unspawn Chest");
-   NetworkServer.Destroy(gameObject);
-}
-*/
 }

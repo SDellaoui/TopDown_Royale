@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
 
 public enum CollectibleType
 {
@@ -6,14 +8,18 @@ public enum CollectibleType
     Health
 }
 
-public class CollectibleController : MonoBehaviour
+public class CollectibleController : MonoBehaviourPunCallbacks, IPunObservable
 {
     // Start is called before the first frame update
     public CollectibleType collectibleType;
     public int collectibleValue;
 
+    public bool hasPwner = false;
+    public int ownerID = -1;
+
     void Start()
     {
+
     }
 
     // Update is called once per frame
@@ -22,29 +28,25 @@ public class CollectibleController : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        GameObject collisionGO = collision.gameObject;
-    }
-    /*
-    [Command]
-    void CmdSendItemToPlayer(GameObject collisionGO)
-    {
-        if (collisionGO.tag == "Player")
+        if(stream.IsWriting)
         {
-            switch (collectibleType)
-            {
-                case CollectibleType.Health:
-                    if (collisionGO.GetComponent<PlayerController>().GetHealth() < 100)
-                    {
-                        collisionGO.GetComponent<PlayerNetworkSetup>().CmdAddHealth(collectibleValue);
-                        NetworkServer.Destroy(gameObject);
-                    }
-                    break;
-                default:
-                    break;
-            }
+            stream.SendNext(ownerID);
+        }
+        else
+        {
+            ownerID = (int)stream.ReceiveNext();
         }
     }
-    */
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+        if(collision.gameObject.tag == "Player")
+        {
+            ownerID = collision.gameObject.GetComponent<PlayerNetworkManager>().photonView.ViewID;
+        }
+    }
 }

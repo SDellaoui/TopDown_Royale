@@ -24,7 +24,6 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         playerRigidBody = GetComponent<Rigidbody2D>();
-
         //Ignore collision with Collectibles
         //Physics2D.IgnoreLayerCollision(gameObject.layer, 8);
     }
@@ -64,23 +63,5 @@ public class PlayerController : MonoBehaviour
     {
         health -= dmg;
         Debug.Log(gameObject.name + " has taken " + dmg + " damages");
-    }
-
-
-    // Health
-    public bool AddHealth(int _health)
-    {
-        if (health == 100)
-            return false;
-
-        if (health + _health > 100)
-            health = 100;
-        else
-            health += _health;
-        return true;
-    }
-    public int GetHealth()
-    {
-        return health;
     }
 }
