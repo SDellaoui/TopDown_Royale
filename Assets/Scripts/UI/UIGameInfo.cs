@@ -33,11 +33,11 @@ public class UIGameInfo : MonoBehaviour
                 prefabToSpawn += "UI_Game_Element";
                 break;
         }
-        Vector3 randomPos = new Vector2(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(0f, 0.3f));
+        Vector3 randomPos = new Vector2(transform.position.x + Random.Range(-0.8f, 0.8f), transform.position.y + Random.Range(0f, 0.8f));
         GameObject damageGO = Instantiate(Resources.Load(prefabToSpawn), randomPos, Quaternion.identity) as GameObject;
         damageGO.transform.SetParent(transform);
-        damageGO.GetComponent<UIGameElement>().Init(value);
-        Destroy(gameObject, 2f);
+        damageGO.GetComponent<UIGameElement>().Init(uiGameInfoType,value);
+        Destroy(gameObject, 1.05f);
         hasBeenInstantiated = true;
     }
 }

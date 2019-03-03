@@ -85,6 +85,8 @@ public class ProjectileController : MonoBehaviourPunCallbacks, IPunInstantiateMa
 
     public void SpawnUIDamage(int damage)
     {
+        if (!photonView.IsMine)
+            return;
         GameObject uiGameInfo = Instantiate(Resources.Load("Prefabs/UI/Game/UI_Game_Info"), transform.position, Quaternion.identity) as GameObject;
         uiGameInfo.transform.SetParent(null);
         uiGameInfo.GetComponentInChildren<UIGameInfo>().Init(UIGameInfoType.Damage, damage.ToString());
